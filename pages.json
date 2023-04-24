@@ -10,8 +10,13 @@
 		{
 			"path": "pages/post/post",
 			"style": {
-				"navigationBarTitleText": "文章详情",
-				"enablePullDownRefresh": true
+				"navigationBarTitleText": "文章详情"
+			}
+		},
+		{
+			"path": "pages/admin/admin",
+			"style": {
+				"navigationBarTitleText": "后台设置"
 			}
 		}
 	],
@@ -21,6 +26,27 @@
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8",
 		"enablePullDownRefresh": true
+	},
+	"tabBar": {
+		"borderStyle": "black",
+		"selectedColor": "#FB7299",
+		"color": "#444444",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/tabbar/index.png",
+				"selectedIconPath": "static/tabbar/index_selected.png",
+				"text": "首页"
+			},{
+				"iconPath": "static/love.png",
+				"text": " "
+			},{
+				"pagePath": "pages/admin/admin",
+				"iconPath": "static/tabbar/admin.png",
+				"selectedIconPath": "static/tabbar/admin_selected.png",
+				"text": "后台"
+			}
+		]
 	},
 	"uniIdRouter": {}
 }

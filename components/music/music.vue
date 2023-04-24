@@ -9,13 +9,13 @@
 		</uni-collapse>
 		<view slot="actions" class="card-actions">
 			<view class="card-actions-item" @click="prevTrack()">
-				<img src="/static/music/last.svg" width="20" height="20" >
+				<image src="/static/music/last.svg" class="mainImage"></image>
 			</view>
 			<view class="card-actions-item" @click="togglePlay()">
-				<img :src="pause" width="20" height="20" >
+				<image :src="pause" class="mainImage"></image>
 			</view>
 			<view class="card-actions-item" @click="nextTrack()">
-				<img src="/static/music/next.svg" width="20" height="20" >
+				<image src="/static/music/next.svg" class="mainImage"></image>
 			</view>
 		</view>
 	</uni-card>
@@ -35,40 +35,16 @@
 			// 播放列表
 				playlist: [
 					{
-					  title: "粉色星球",
-					  artist: "youngior",
-					  source: "https://music.163.com/song/media/outer/url?id=1445556953.mp3",
-					  cover: "https://p3.music.126.net/NwZ--QgLDbipDwMVYxDYeQ==/109951164960533856.jpg?param=300x300"
-					},
-					{
-					  title: "你一笑便闪烁我整个宇宙",
-					  artist: "陈亦云",
-					  source: "https://music.163.com/song/media/outer/url?id=1832672806.mp3",
-					  cover: "https://p3.music.126.net/psfmPdFQQGauEuJqfZIpTw==/109951165835964504.jpg?param=300x300"
-					},
-					{
-						title: "哪里都是你",
-						artist: "队长",
-						cover: "https://p3.music.126.net/lnOnBbP_H-052Hv5ls-QjA==/109951162964628408.jpg?param=300x300",
-						source: "https://music.163.com/song/media/outer/url?id=488249475.mp3",
-					},
-					{
-						title: "爱丫爱丫",
-						artist: "许66",
-						cover: "https://p4.music.126.net/Zrf65912ZxBNKU4px83SRg==/109951167166626780.jpg?param=300x300",
-						source: "https://music.163.com/song/media/outer/url?id=1928857203.mp3",
-					},
-					{
-						title: "起风了",
-						artist: "买辣椒也用券",
-						cover: "https://p3.music.126.net/diGAyEmpymX8G7JcnElncQ==/109951163699673355.jpg?param=300x300",
-						source: "https://music.163.com/song/media/outer/url?id=1330348068.mp3",
-					},
-					{
-						title: "Star",
-						artist: "XMASwu(吴骜)",
-						cover: "http://p1.music.126.net/6-F8k6AuCnsvMjDNKYHriw==/109951166677305699.jpg?param=130y130",
-						source: "https://music.163.com/song/media/outer/url?id=1899705498",
+					      title: "起风了",
+					      artist: "买辣椒也用券",
+					      cover: "https://p3.music.126.net/diGAyEmpymX8G7JcnElncQ==/109951163699673355.jpg?param=300x300",
+					      source: "https://music.163.com/song/media/outer/url?id=1330348068",
+					     },
+					     {
+					      title: "Star",
+					      artist: "XMASwu(吴骜)",
+					      cover: "http://p1.music.126.net/6-F8k6AuCnsvMjDNKYHriw==/109951166677305699.jpg?param=130y130",
+					      source: "https://music.163.com/song/media/outer/url?id=1899705498",
 					}
 				],
 				// 当前歌曲的索引
@@ -78,6 +54,7 @@
 		},
 		mounted() {
 			this.playCurrentTrack();
+			this.getMusicList();
 			innerAudioContext.onEnded(() => {
 				setTimeout(()=>{
 					this.nextTrack();
@@ -85,6 +62,18 @@
 			});
 		},
 		methods: {
+			//获取音乐列表，存放倒playList中
+			getMusicList(){
+				uni.request({
+					url:'https://ehre.top/api/getMusicList',
+					method:'get',
+					dataType:'json',
+					success: (res) => {
+						this.playlist=res.data.data;
+						console.log(res.data);
+					}
+				})
+			},
 			//跳转到某一首歌曲
 			jumpTrack(num){
 				this.currentTrackIndex = num;
@@ -125,15 +114,9 @@
 </script>
 
 <style>
-/* 播放器样式 */
-	.music-player {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		z-index: 1000;
-		padding: 10px;
-		background-color: #fff;
-		border-top: 1px solid #ccc;
+	.mainImage{
+		width: 25px;
+		height: 25px;
 	}
 	
 	.card-actions {
@@ -150,9 +133,5 @@
 		flex-direction: column;
 		align-items: center;
 		margin: 8px;
-	}
-	
-	.no-border {
-		border-width: 0;
 	}
 </style>

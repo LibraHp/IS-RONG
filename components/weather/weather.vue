@@ -1,11 +1,11 @@
 <template>
-	<uni-card :title="city" :sub-title="`${weather} ${temp}℃`" extra="天气" :thumbnail="avatar" @click="push()">
+	<uni-card :title="city" :sub-title="`${weather} ${temp}℃`" extra="天气" :thumbnail="avatar" @click="getHitokoto()">
 		<text class="mainFont">{{hitokoto}}</text>
 	</uni-card>
 </template>
 
 <script>
-	const key = "b28167004b73b3f2904a8f33d26fc324";
+	const key = "b28167004b73b3f2904a8f33d26fc324";//高德api获取到的key
 	export default{
 		data(){
 			return{
@@ -13,7 +13,8 @@
 				temp:'',
 				weather:'',
 				avatar:'',
-				hitokoto: ''
+				hitokoto: '',
+				NewCity: ''
 			}
 		},
 		mounted() {
@@ -21,10 +22,7 @@
 			this.getHitokoto();
 		},
 		methods:{
-			push() {
-				this.getCity();
-				this.getHitokoto();
-			},
+			//获取一言
 			getHitokoto(){
 				uni.request({
 					url:"https://v1.hitokoto.cn",
@@ -40,6 +38,7 @@
 					}
 				})
 			},
+			//调用高德api获取ip所在城市
 			async getCity(){
 				let API = "https://restapi.amap.com/v3/ip";
 				uni.request({
@@ -56,6 +55,7 @@
 					}
 				})
 			},
+			//获取天气，并根据索引显示天气图标
 			async getWeather(city){
 				let API = "https://restapi.amap.com/v3/weather/weatherInfo";
 				uni.request({
@@ -91,6 +91,7 @@
 							case "冻雨":this.avatar="/static/weather/dongyu.svg";break;
 							case "雷阵雨":this.avatar="/static/weather/leizhenyu.svg";break;
 							case "特大暴雨":this.avatar="/static/weather/tedabaoyu.svg";break;
+							case "霾":this.avatar="/static/weather/mai.svg";break;
 							case "雷阵雨伴有冰雹":this.avatar="/static/weather/leizhenyubanyoubingbao.svg";break;
 							default :this.avatar="/static/love.svg";break;
 						}
@@ -102,10 +103,4 @@
 </script>
 
 <style>
-	p{
-		text-align: center;
-	}
-	h2{
-		text-align: center;
-	}
 </style>

@@ -1,0 +1,10 @@
+{
+  "component": true,
+  "usingComponents": {
+    "uni-list": "../uni-list/uni-list",
+    "uni-list-item": "../uni-list-item/uni-list-item",
+    "uni-collapse-item": "../uni-collapse-item/uni-collapse-item",
+    "uni-collapse": "../uni-collapse/uni-collapse",
+    "uni-card": "../uni-card/uni-card"
+  }
+}

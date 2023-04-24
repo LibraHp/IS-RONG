@@ -2,7 +2,6 @@
 	<view class="uni-margin-wrap">
 		<swiper class="swiper" circular :indicator-dots="true" :autoplay="true" :interval="4000" :duration="800">
 			<swiper-item class="bginfo" v-for="item in background" >
-				<!-- <image :src="item" mode="aspectFit" ></image> -->
 				<uni-card :cover="item"></uni-card>
 			</swiper-item>
 		</swiper>
@@ -10,8 +9,8 @@
 	<Weather/>
 	<musicPlayer/>
     <view class="uni-padding-wrap">
-		<uni-list  v-for="(item,index) in postList" :key="index">
-			<uni-card :title="item.title" :sub-title="`${item.year}-${item.month}-${item.day}`" :extra="item.category" thumbnail="/static/love.svg" @click="onClick(item.title,item.text)">
+		<uni-list  v-for="(item,index) in postList" :key="index" :border="false">
+			<uni-card :title="item.title" :sub-title="`${item.year}-${item.month}-${item.day}`" :extra="item.category" thumbnail="/static/love.svg" @click="cardOnClick(item.title,item.text,item.cid)" margin="5px 20px">
 				<text class="mainFont">{{getPostText(item.text)}}</text>
 			</uni-card>
 		</uni-list>
@@ -27,14 +26,15 @@
         components: {uniList,uniListItem,Weather,musicPlayer},
         data() {
             return {
-                postList: [],
-				background: [],
-				postText: '',
+                postList: [],//文章列表
+				background: [],//首页轮播图
+				postText: '',//文章缩略内容
             };
         },
         onLoad() {
             this.getList();
 			this.getMain();
+			this.getIndexPic();
         },
 		onPullDownRefresh() {
 			console.log("触发了下拉刷新"),
@@ -44,6 +44,7 @@
 			},2000)
 		},
         methods: {
+			//获取文章，将文章内容存放到postList中返回
             async getList() {
 				let data = {
 					page: 1,
@@ -59,19 +60,16 @@
                         this.postList = res.data.data;
                     },
                 });
-				uni.showLoading({
-					title: '加载中'
-				});
 				
-				setTimeout(function () {
-					uni.hideLoading();
-				}, 2000);
+				
             },
-			onClick(title,text){
+			//卡片列表单击事件，传入title和text到post界面，节省资源
+			cardOnClick(title,text,cid){
 				uni.navigateTo({
-				    url: '/pages/post/post?title='+title+'&text='+text
+				    url: '/pages/post/post?title='+title+'&text='+text+'&cid='+cid
 				});
 			},
+			//获取公告标志，内容，版本号，判断是否需要弹出公告或者是否需要更新
 			async getMain() {
 				uni.request({
 					url: mainApi+"post?cid=170",
@@ -81,17 +79,13 @@
 						var main = res.data.data.text;
 						var mainList = main.split(',');
 						var flag = parseInt(mainList[0]);
-						var musicUrl = mainList[1];
-						this.background[0]=mainList[2];
-						this.background[1]=mainList[3];
-						this.background[2]=mainList[4];
-						var tips = mainList[5];
-						let version = parseInt(mainList[6]);
+						var tips = mainList[1];
+						let version = parseInt(mainList[2]);
 						this.putInfo(flag,tips,version);
-						//this.playVoice(musicUrl);
 					},
 				})
 			},
+			//获取postList中的文章，然后处理数据传入post界面
 			getPostText(text){
 				let main = text.split(';');
 				let postText = "";
@@ -106,6 +100,19 @@
 				}
 				return postText;
 			},
+			//获取首页轮播图，存放到background中
+			getIndexPic(){
+				uni.request({
+					url: mainApi + "getIndexPic",
+					method: 'get',
+					dataType: 'json',
+					success: (res) => {
+						let main =res.data.data;
+						this.background = main.split(';');
+					}
+				})
+			},
+			//弹窗，提示界面
 			putInfo(flag,tips,version){
 				switch(flag){
 					case 1:
