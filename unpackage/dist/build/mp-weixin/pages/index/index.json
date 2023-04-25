@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "是小荣吖！",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "uni-list": "../../components/uni-list/uni-list",
+    "weather": "../../components/weather/weather",
+    "music-player": "../../components/music/music",
+    "uni-card": "../../components/uni-card/uni-card"
+  }
+}
