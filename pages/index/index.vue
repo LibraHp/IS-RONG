@@ -15,6 +15,7 @@
 			</uni-card>
 		</uni-list>
     </view>
+	<p style="text-align: center;color: darkgrey;font-size: 10px">{{status}}</p>
 </template>
 <script>
 	import uniList from "@/components/uni-list/uni-list.vue"
@@ -29,10 +30,13 @@
                 postList: [],//文章列表
 				background: [],//首页轮播图
 				postText: '',//文章缩略内容
+				page: 1 ,//页数
+				pageFlag: true,
+				status: "加载中..."
             };
         },
         onLoad() {
-            this.getList();
+            this.getList(this.page);
 			this.getMain();
 			this.getIndexPic();
         },
@@ -43,12 +47,21 @@
 			uni.stopPullDownRefresh();
 			},2000)
 		},
+		onReachBottom() {
+		    console.log('触发了上拉加载');
+			if(this.pageFlag){
+				this.page++;
+				this.getList(this.page);
+			}else{
+				console.log("没有更多啦！");
+			}
+		},
         methods: {
 			//获取文章，将文章内容存放到postList中返回
-            async getList() {
+            async getList(page) {
 				let data = {
-					page: 1,
-					pageSize: 100,
+					page: page,
+					pageSize: 10,
 				}
                 uni.request({
                     url: mainApi+"posts", 
@@ -57,11 +70,13 @@
 					data: data,
                     success: (res) => {
                         console.log(res.data.data);
-                        this.postList = res.data.data;
+                        this.postList = this.postList.concat(res.data.data);
+						if((res.data.data).length<10){
+							this.pageFlag=false;
+							this.status="已经到底啦！";
+						}
                     },
                 });
-				
-				
             },
 			//卡片列表单击事件，传入title和text到post界面，节省资源
 			cardOnClick(title,text,cid){
@@ -81,7 +96,8 @@
 						var flag = parseInt(mainList[0]);
 						var tips = mainList[1];
 						let version = parseInt(mainList[2]);
-						this.putInfo(flag,tips,version);
+						let url = mainList[3];
+						this.putInfo(flag,tips,version,url);
 					},
 				})
 			},
@@ -113,7 +129,7 @@
 				})
 			},
 			//弹窗，提示界面
-			putInfo(flag,tips,version){
+			putInfo(flag,tips,version,url){
 				switch(flag){
 					case 1:
 						uni.showModal({
@@ -132,7 +148,7 @@
 								confirmText: '前往更新',
 								success: function(res){
 									if (res.confirm) {
-										plus.runtime.openURL('https://github.com/LibraHp/IS-RONG/releases');
+										plus.runtime.openURL(url);
 									} else if (res.cancel) {
 										console.log('用户点击取消');
 									}

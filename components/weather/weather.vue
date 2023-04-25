@@ -29,7 +29,8 @@
 					method:'GET',
 					dataType:'json',
 					data:{
-						c: 'd',
+						c: 'h',
+						c: 'f',
 						encode: 'json',
 					},
 					success: (res) => {
