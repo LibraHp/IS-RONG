@@ -1,0 +1,1 @@
+"use strict";const e=require("../../common/vendor.js"),s={methods:{handleMessage(e){console.log("接收到的消息："+JSON.stringify(e.detail.data))}}};const n=e._export_sfc(s,[["render",function(s,n,a,o,t,r){return{a:e.o(((...e)=>r.handleMessage&&r.handleMessage(...e)))}}]]);wx.createPage(n);

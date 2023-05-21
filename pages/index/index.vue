@@ -29,7 +29,6 @@
             return {
                 postList: [],//文章列表
 				background: [],//首页轮播图
-				postText: '',//文章缩略内容
 				page: 1 ,//页数
 				pageFlag: true,
 				status: "加载中..."
@@ -43,7 +42,7 @@
 		onPullDownRefresh() {
 			console.log("触发了下拉刷新"),
 			setTimeout(()=>{
-			this.getList();
+			this.getList(this.page);
 			uni.stopPullDownRefresh();
 			},2000)
 		},
@@ -69,7 +68,6 @@
                     dataType: 'json',
 					data: data,
                     success: (res) => {
-                        console.log(res.data.data);
                         this.postList = this.postList.concat(res.data.data);
 						if((res.data.data).length<10){
 							this.pageFlag=false;
@@ -101,7 +99,7 @@
 					},
 				})
 			},
-			//获取postList中的文章，然后处理数据传入post界面
+			//获取文章缩略内容
 			getPostText(text){
 				let main = text.split(';');
 				let postText = "";

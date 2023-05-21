@@ -1,0 +1,1 @@
+<view><web-view src="https://ehre.icehomura.com/admin" bindmessage="{{a}}"></web-view></view>

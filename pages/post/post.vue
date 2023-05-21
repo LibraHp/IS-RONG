@@ -52,23 +52,6 @@
 			onClick(e) {
 				console.log(e)
 			},
-/* 			sharePost(cid,title,text,cover){
-				uni.share({
-					provider: "weixin",
-					scene: "WXSceneSession",
-					type: 0,
-					href: "https://ehre.top/Small-incidents/"+cid+".html",
-					title: "是小荣吖！"+title,
-					summary: text,
-					imageUrl: cover,
-					success: function (res) {
-						console.log("success:" + JSON.stringify(res));
-					},
-					fail: function (err) {
-						console.log("fail:" + JSON.stringify(err));
-					}
-				});
-			}, */
 			actionsClick(text) {
 				uni.showToast({
 					title: text,
@@ -90,6 +73,12 @@
 					}
 				})
 			},
+			getAvatar(email){
+				var atIndex = email.indexOf("@");
+				var qq =  email.substring(0, atIndex);
+				var avatar = "http://q1.qlogo.cn/g?b=qq&nk=" + qq + "&s=100";
+				return avatar;
+			},
 			timestampToDate(timestamp) {
 			  var date = new Date(timestamp * 1000);
 			  var year = date.getFullYear();
@@ -102,12 +91,23 @@
 			  var formattedTime = hours + ":" + minutes + ":" + seconds;
 			  return formattedDate + " " + formattedTime;
 			},
-			getAvatar(email){
-				var atIndex = email.indexOf("@");
-				var qq =  email.substring(0, atIndex);
-				var avatar = "http://q1.qlogo.cn/g?b=qq&nk=" + qq + "&s=100";
-				return avatar;
-			}
+/* 			sharePost(cid,title,text,cover){
+				uni.share({
+					provider: "weixin",
+					scene: "WXSceneSession",
+					type: 0,
+					href: "https://ehre.top/Small-incidents/"+cid+".html",
+					title: "是小荣吖！"+title,
+					summary: text,
+					imageUrl: cover,
+					success: function (res) {
+						console.log("success:" + JSON.stringify(res));
+					},
+					fail: function (err) {
+						console.log("fail:" + JSON.stringify(err));
+					}
+				});
+			}, */			
 		},
 		onLoad: function (option) {
 			console.log(option);
