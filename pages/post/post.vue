@@ -30,6 +30,7 @@
 <script>
 	import uniList from "@/components/uni-list/uni-list.vue"
 	import uniListItem from "@/components/uni-list-item/uni-list-item.vue"
+	const mainApi = "https://ehre.top/api/"
 	export default {
 		components: {},
 		data() {
@@ -45,10 +46,37 @@
 		onPullDownRefresh() {
 			console.log("触发了下拉刷新"),
 			setTimeout(()=>{
-			uni.stopPullDownRefresh();
+				this.getPost(this.cid);
+				this.getCommentsList(this.cid);
+				uni.stopPullDownRefresh();
 			},2000)
 		},
 		methods: {
+			getPost(cid) {
+				uni.request({
+					url: mainApi+"post?cid="+cid,
+					method: 'get',
+					dataType: 'json',
+					success: (res) => {
+						let main = res.data.data;
+						console.log(main);
+						this.title = main.title;
+						let tText = main.text;
+						var mainList = tText.split(';');
+						if(mainList[1]==null){
+							if(!main[0]){
+								this.text = "暂时没有简介了啦(●'◡'●)";
+							}else{
+								this.text = mainList[0];
+								this.cover = mainList[2];
+							}
+						}else{
+							this.text = mainList[1];
+						}
+						console.log(mainList);
+					},
+				})
+			},
 			onClick(e) {
 				console.log(e)
 			},
@@ -114,6 +142,7 @@
 			this.title = option.title;
 			var main = option.text;
 			this.getCommentsList(option.cid);
+			this.cid = option.cid;
 			var mainList = main.split(';');
 			this.text=mainList[1];
 			this.cover=mainList[2];

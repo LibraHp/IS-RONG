@@ -1,21 +1,23 @@
 <template>
-	<view class="uni-margin-wrap">
-		<swiper class="swiper" circular :indicator-dots="true" :autoplay="true" :interval="4000" :duration="800">
-			<swiper-item class="bginfo" v-for="item in background" >
-				<uni-card :cover="item"></uni-card>
-			</swiper-item>
-		</swiper>
+	<view class="appBody">
+		<view class="uni-margin-wrap">
+			<swiper class="swiper" circular :indicator-dots="true" :autoplay="true" :interval="4000" :duration="800">
+				<swiper-item class="bginfo" v-for="item in background" >
+					<uni-card :cover="item"></uni-card>
+				</swiper-item>
+			</swiper>
+		</view>
+		<Weather/>
+		<musicPlayer/>
+		<view class="uni-padding-wrap">
+			<uni-list  v-for="(item,index) in postList" :key="index" :border="false">
+				<uni-card :title="item.title" :sub-title="`${item.year}-${item.month}-${item.day}`" :extra="item.category" thumbnail="/static/love.svg" @click="cardOnClick(item.title,item.text,item.cid)" margin="5px 20px">
+					<text class="mainFont">{{getPostText(item.text)}}</text>
+				</uni-card>
+			</uni-list>
+		</view>
+		<p style="text-align: center;color: darkgrey;font-size: 10px">{{status}}</p>
 	</view>
-	<Weather/>
-	<musicPlayer/>
-    <view class="uni-padding-wrap">
-		<uni-list  v-for="(item,index) in postList" :key="index" :border="false">
-			<uni-card :title="item.title" :sub-title="`${item.year}-${item.month}-${item.day}`" :extra="item.category" thumbnail="/static/love.svg" @click="cardOnClick(item.title,item.text,item.cid)" margin="5px 20px">
-				<text class="mainFont">{{getPostText(item.text)}}</text>
-			</uni-card>
-		</uni-list>
-    </view>
-	<p style="text-align: center;color: darkgrey;font-size: 10px">{{status}}</p>
 </template>
 <script>
 	import uniList from "@/components/uni-list/uni-list.vue"
@@ -191,5 +193,9 @@
 	
 	.uni-padding-wrap {
 	    width:100%;
+	}
+	
+	.appBody{
+		margin: 5px 3px;
 	}
 </style>
