@@ -70,7 +70,11 @@
                     dataType: 'json',
 					data: data,
                     success: (res) => {
-                        this.postList = this.postList.concat(res.data.data);
+						if(page==1){
+							this.postList = res.data.data;
+						}else{
+							this.postList = this.postList.concat(res.data.data);
+						}
 						if((res.data.data).length<10){
 							this.pageFlag=false;
 							this.status="已经到底啦！";
