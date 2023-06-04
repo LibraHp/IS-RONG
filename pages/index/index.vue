@@ -2,7 +2,7 @@
 	<view class="appBody">
 		<view class="uni-margin-wrap">
 			<swiper class="swiper" circular :indicator-dots="true" :autoplay="true" :interval="4000" :duration="800">
-				<swiper-item class="bginfo" v-for="item in background" >
+				<swiper-item v-for="item in background" >
 					<uni-card :cover="item"></uni-card>
 				</swiper-item>
 			</swiper>
@@ -65,7 +65,7 @@
 					pageSize: 10,
 				}
                 uni.request({
-                    url: mainApi+"posts", 
+                    url: mainApi + "posts", 
                     method: 'get',
                     dataType: 'json',
 					data: data,
@@ -167,32 +167,10 @@
 </script>
 <style>
 	.uni-margin-wrap {
-		width:690rpx;
 		width: 100%;
 	}
 	.swiper {
 		height: 550rpx;
-	}
-	.swiper-item {
-		display: block;
-		height: 300rpx;
-		line-height: 300rpx;
-		text-align: center;
-	}
-	
-	.swiper-list {
-		margin-top: 40rpx;
-		margin-bottom: 0;
-	}
-	
-	.uni-common-mt{
-		margin-top:60rpx;
-		position:relative;
-	}
-	
-	.info {
-		position: absolute;
-		right:20rpx;
 	}
 	
 	.uni-padding-wrap {
